@@ -24,6 +24,7 @@ let runCalc = function (targetGlucose, suffix) {
     if (fraction > 0.7) {
         rounded += 0.5;
     }
+    dosage = dosage.toFixed(2);
     let text = `${dosage} which rounds to <strong class="text-primary">${rounded}</strong>`;
     document.getElementById(`humalog-dosage${suffix}`).innerHTML = text;
 };
@@ -31,6 +32,11 @@ let runCalc = function (targetGlucose, suffix) {
 let runBothCalcs = () => {
     runCalc(150, '');
     runCalc(180, '-night');
+
+    Array.from(document.getElementsByClassName('dosage')).forEach((elt) => {
+        elt.classList.remove('invisible');
+        elt.classList.add('visible');
+    });
 }
 
 var btn = document.getElementById('calc-button')
