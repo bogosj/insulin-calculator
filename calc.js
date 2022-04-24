@@ -1,3 +1,6 @@
+const CARB_RATIO = 12;
+const CORRECTION_FACTOR = 60;
+
 let runCalc = (targetGlucose, suffix) => {
     let reading = document.getElementById('glucometer-reading').value;
     let carbs = document.getElementById('carb-grams').value;
@@ -6,12 +9,12 @@ let runCalc = (targetGlucose, suffix) => {
 
     let delta = reading - targetGlucose;
     document.getElementById(`glucose-delta${suffix}`).innerText = delta;
-    let cfInsulin = delta / 60;
+    let cfInsulin = delta / CORRECTION_FACTOR;
     cfInsulin = Math.max(cfInsulin, 0);
     cfInsulin = parseFloat(cfInsulin.toFixed(2));
     document.getElementById(`cf-insulin${suffix}`).innerText = `${cfInsulin} units`;
 
-    let crInsulin = carbs / 12;
+    let crInsulin = carbs / CARB_RATIO;
     crInsulin = parseFloat(crInsulin.toFixed(2));
     document.getElementById('cr-insulin').innerText = `${crInsulin} units`;
 
@@ -37,7 +40,22 @@ let runBothCalcs = () => {
         elt.classList.remove('invisible');
         elt.classList.add('visible');
     });
-}
+};
+
+let updateDisplayUnits = () => {
+    Array.from(document.getElementsByClassName('carb-ratio-display')).forEach((elt) => {
+        elt.innerHTML = CARB_RATIO;
+    });
+    Array.from(document.getElementsByClassName('correction-factor-display')).forEach((elt) => {
+        elt.innerText = CORRECTION_FACTOR;
+    });
+};
+
+let init = () => {
+    updateDisplayUnits();
+};
 
 var btn = document.getElementById('calc-button')
 btn.addEventListener('click', runBothCalcs);
+
+init();
