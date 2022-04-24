@@ -2,10 +2,10 @@
   "background_color": "#ffffff",
   "dir": "ltr",
   "display": "standalone",
-  "name": "bogosj.github",
+  "name": "Joe's Insulin Calculator",
   "orientation": "any",
   "scope": "/",
-  "short_name": "bogosj.github",
+  "short_name": "Joe's Insulin Calculator",
   "start_url": "/",
   "theme_color": "#7952b3"
 }
