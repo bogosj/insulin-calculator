@@ -1,4 +1,4 @@
-let runCalc = function (targetGlucose, suffix) {
+let runCalc = (targetGlucose, suffix) => {
     let reading = document.getElementById('glucometer-reading').value;
     let carbs = document.getElementById('carb-grams').value;
     reading = parseInt(reading, 10);
