@@ -6,7 +6,7 @@ let runCalc = function (targetGlucose, suffix) {
 
     let delta = reading - targetGlucose;
     document.getElementById(`glucose-delta${suffix}`).innerText = delta;
-    let cfInsulin = delta / 40;
+    let cfInsulin = delta / 60;
     cfInsulin = Math.max(cfInsulin, 0);
     cfInsulin = parseFloat(cfInsulin.toFixed(2));
     document.getElementById(`cf-insulin${suffix}`).innerText = `${cfInsulin} units`;
