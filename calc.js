@@ -1,19 +1,19 @@
-let runCalc = function () {
+let runCalc = function (targetGlucose, suffix) {
     let reading = document.getElementById('glucometer-reading').value;
     let carbs = document.getElementById('carb-grams').value;
     reading = parseInt(reading, 10);
     carbs = parseInt(carbs, 10);
 
-    let delta = reading - 150;
-    document.getElementById('glucose-delta').innerText = delta;
+    let delta = reading - targetGlucose;
+    document.getElementById(`glucose-delta${suffix}`).innerText = delta;
     let cfInsulin = delta / 40;
     cfInsulin = Math.max(cfInsulin, 0);
     cfInsulin = parseFloat(cfInsulin.toFixed(2));
-    document.getElementById('cf-insulin').innerText = cfInsulin + ' units';
+    document.getElementById(`cf-insulin${suffix}`).innerText = `${cfInsulin} units`;
 
     let crInsulin = carbs / 12;
     crInsulin = parseFloat(crInsulin.toFixed(2));
-    document.getElementById('cr-insulin').innerText = crInsulin + ' units';
+    document.getElementById('cr-insulin').innerText = `${crInsulin} units`;
 
     let dosage = cfInsulin + crInsulin;
     let fraction = dosage - Math.trunc(dosage);
@@ -25,8 +25,13 @@ let runCalc = function () {
         rounded += 0.5;
     }
     let text = `${dosage} which rounds to <strong class="text-primary">${rounded}</strong>`;
-    document.getElementById('humalog-dosage').innerHTML = text;
+    document.getElementById(`humalog-dosage${suffix}`).innerHTML = text;
 };
 
+let runBothCalcs = () => {
+    runCalc(150, '');
+    runCalc(180, '-night');
+}
+
 var btn = document.getElementById('calc-button')
-btn.addEventListener('click', runCalc);
+btn.addEventListener('click', runBothCalcs);
