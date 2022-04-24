@@ -1,0 +1,11 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "bogosj.github",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "bogosj.github",
+  "start_url": "/",
+  "theme_color": "#7952b3"
+}
