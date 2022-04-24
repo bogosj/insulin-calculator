@@ -4,8 +4,8 @@
   "display": "standalone",
   "name": "Joe's Insulin Calculator",
   "orientation": "any",
-  "scope": "/",
+  "scope": "/insulin-calculator/",
   "short_name": "Joe's Insulin Calculator",
-  "start_url": "/",
+  "start_url": "/insulin-calculator/",
   "theme_color": "#7952b3"
 }
