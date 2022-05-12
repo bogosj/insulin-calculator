@@ -1,4 +1,4 @@
-const CARB_RATIO = 10;
+const CARB_RATIO = 15;
 const CORRECTION_FACTOR = 60;
 
 let runCalc = (targetGlucose, suffix) => {
