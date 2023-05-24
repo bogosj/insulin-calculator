@@ -1,5 +1,15 @@
-const CARB_RATIO = 15;
-const CORRECTION_FACTOR = 60;
+// Joe's default values
+var CARB_RATIO = 15; // grams/U
+var CORRECTION_FACTOR = 60; // mg/dL/U
+var BG_TARGET = {'morn':120,'work':120,'even':120,'sleep':150}; // Day periods ending in -ing
+var BG_CORRECT = 150; // If below this number, don't correct
+var UNITS_SI = false; // switch between mg/dL and mmol/L
+// These may be implemented later 
+var IOB = 0; // Units on board
+var LAST_TIME = null; // Time of last bolus
+var ACTIVE_INSULIN_TIME = 3; // hours
+var enable_RAGE_BOLUS = false; // Enable non-linear calculations  
+var enable_REVERSE_CORRECTION = false; 
 
 let runCalc = (targetGlucose, suffix) => {
     let reading = document.getElementById('glucometer-reading').value;
@@ -7,6 +17,7 @@ let runCalc = (targetGlucose, suffix) => {
     reading = parseInt(reading, 10);
     carbs = parseInt(carbs, 10);
 
+    if (reading<=BG_CORRECT) {reading = 0};
     let delta = reading - targetGlucose;
     document.getElementById(`glucose-delta${suffix}`).innerText = delta;
     let cfInsulin = delta / CORRECTION_FACTOR;
@@ -33,8 +44,8 @@ let runCalc = (targetGlucose, suffix) => {
 };
 
 let runBothCalcs = () => {
-    runCalc(150, '');
-    runCalc(180, '-night');
+    runCalc(BG_TARGET.morn, '');
+    runCalc(BG_TARGET.sleep, '-night');
 
     Array.from(document.getElementsByClassName('dosage')).forEach((elt) => {
         elt.classList.remove('invisible');
@@ -57,5 +68,11 @@ let init = () => {
 
 var btn = document.getElementById('calc-button')
 btn.addEventListener('click', runBothCalcs);
+
+var btn = document.getElementById('glucometer-reading')
+btn.addEventListener('onchange', runBothCalcs);
+
+var btn = document.getElementById('carb-grams')
+btn.addEventListener('onchange', runBothCalcs);
 
 init();
