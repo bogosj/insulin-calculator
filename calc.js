@@ -36,7 +36,7 @@ if (localStorage.getItem('CARB_RATIO') == null) {
   var enable_REVERSE_CORRECTION = localStorage.getItem('enable_REVERSE_CORRECTION');
 }
 if (localStorage.getItem('BG_TARGET') == null) {
-  var BG_TARGET = { 'morn': 120, 'work': 120, 'even': 120, 'sleep': 150 }; // Day periods ending in -ing
+  var BG_TARGET = 120; // { 'morn': 120, 'work': 120, 'even': 120, 'sleep': 150 } Day periods ending in -ing
 } else {
   var BG_TARGET = JSON.parse(localStorage.getItem('BG_TARGET'));
   console.log('resetting')
@@ -48,7 +48,10 @@ let runCalc = (targetGlucose, suffix) => {
   reading = parseInt(reading, 10) || 0;
   carbs = parseInt(carbs, 10) || 0;
 
-  if (reading <= BG_CORRECT) { reading = 0 };
+  if (reading <= BG_CORRECT) { 
+    reading = 0;
+    document.getElementById('correct-warn').hidden = false;
+  } else {document.getElementById('correct-warn').hidden = true;};
   let delta = reading - targetGlucose;
   document.getElementById(`glucose-delta${suffix}`).innerText = delta;
   let cfInsulin = delta / CORRECTION_FACTOR;
@@ -59,7 +62,7 @@ let runCalc = (targetGlucose, suffix) => {
 
   let crInsulin = carbs / CARB_RATIO;
   crInsulin = parseFloat(crInsulin.toFixed(2));
-  document.getElementById('cr-insulin').innerText = `${crInsulin} units`;
+  //document.getElementById('cr-insulin').innerText = `${crInsulin} units`;
   document.getElementById('CRdose').value = crInsulin;
 
 
@@ -73,14 +76,14 @@ let runCalc = (targetGlucose, suffix) => {
     rounded += 0.5;
   }
   dosage = dosage.toFixed(2);
-  let text = `${dosage} which rounds to <strong class="text-primary">${rounded}</strong>`;
-  document.getElementById(`humalog-dosage${suffix}`).innerHTML = text;
+  // let text = `${dosage} which rounds to <strong class="text-primary">${rounded}</strong>`;
+  // document.getElementById(`humalog-dosage${suffix}`).innerHTML = text;
   document.getElementById('dose').value = dosage;
 };
 
 let runBothCalcs = () => {
-  runCalc(BG_TARGET.morn, '');
-  runCalc(BG_TARGET.sleep, '-night');
+  runCalc(BG_TARGET, '');
+  
 
   Array.from(document.getElementsByClassName('dosage')).forEach((elt) => {
     elt.classList.remove('invisible');
@@ -94,6 +97,12 @@ let updateDisplayUnits = () => {
   });
   Array.from(document.getElementsByClassName('correction-factor-display')).forEach((elt) => {
     elt.innerText = CORRECTION_FACTOR;
+  });
+  Array.from(document.getElementsByClassName('target-display')).forEach((elt) => {
+    elt.innerText = BG_TARGET;
+  });
+  Array.from(document.getElementsByClassName('correct-above-display')).forEach((elt) => {
+    elt.innerText = BG_CORRECT;
   });
 };
 

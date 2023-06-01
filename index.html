@@ -4,13 +4,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Joe's Insulin Calculator</title>
+    <title>Insulin Calculator</title>
 
     <!-- Bootstrap core CSS -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
+    <style>
+        dialog {
+            display: block;
+            opacity: 0;
+            transition: opacity 0.5s;
+            
+            }
+            dialog[open] {
+            opacity: 1;
+            
+            }
+    </style>
     <meta name="theme-color" content="#7952b3">
     <link rel="manifest" href="manifest.json" />
     <script type="module">
@@ -21,19 +33,18 @@
 </head>
 
 <body class="bg-light">
-    <div class="input-group mb-3">
-
-
-    </div>
+    
     <div class="container">
-        <img src="assets\ui_settings.png" id="settingsbtn" /> <!-- https://healthicons.org/ -->
         <main>
-            <div class="py-5 text-center">
-                <h2>Joe's Insulin Calculator</h2>
-            </div>
+            
+            <div class="py-3 text-center">
+                    <img src="assets\ui_settings.png" id="settingsbtn" style="width:40px; display:inline;position:fixed;left:0px;top:10px;;"/> <!-- https://healthicons.org/ -->
+                    Insulin Calculator
+                </div>
+            
 
 
-            <div class="mt-4">
+            <div class="mt-2">
                 <h3>Mealtime Carbs</h3>
 
 
@@ -63,12 +74,12 @@
                 </div>
 
                 <div>
-                    <input type="button" value="Calculate" id="calc-button">
-                    <h3 class="mt-4 dosage ">Novalog Doseage: <span id="humalog-dosage"></span></h3>
-                    <h3 class="dosage ">Novalog Doseage (night): <span id="humalog-dosage-night"></span></h3>
+                    <div class="py-1 text-center">
+                        <button type="button" class="btn btn-outline-primary"  id="calc-button">Calculate</button>
+                    </div>
+                    
 
-
-                    <div class="input-group mb-3">
+                    <div class="input-group py-3">
                         <span class="input-group-text"><img src="assets/syringe.png" style="height:20px"></span>
                         <div class="form-floating">
                             <input type="tel" class="form-control" name="dose" id="dose" placeholder="Grams for carbs"
@@ -93,7 +104,7 @@
                         <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <p>Divided by Joe's CR of <span class="carb-ratio-display"></span> = <span
+                                <p>Divided by CR of <span class="carb-ratio-display"></span> = <span
                                         id="cr-insulin"></span></p>
 
 
@@ -103,29 +114,43 @@
                                     <div class="form-floating">
                                         <input type="tel" class="form-control" name="CRdose" id="CRdose"
                                             placeholder="Grams for carbs" disabled>
-                                        <label for="CRdose">Carb Insulin</label>
+                                        <label for="CRdose">Insulin for Carbs</label>
                                     </div>
                                     <span class="input-group-text">U</span>
                                 </div>
-                                <p class="mb-0">Minus target of 150 <span class="units"></span> = <span
+
+                                <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                                    <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                    </symbol>
+                                  </svg>
+                                  
+                                  <div id="correct-warn">
+
+                                      <div class="alert alert-warning d-flex align-items-center" role="alert" >
+                                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                                          <div>
+                                              BG is below correction limit of <span class="correct-above-display"></span>  <span class="units"></span>. No correction dose given.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <p class="mb-0">Minus target of <span class="target-display"></span> <span class="units"></span> = <span
                                         id="glucose-delta"></span></p>
-                                <p class="mb-0">Minus target of 180 <span class="units"></span> = <span
-                                        id="glucose-delta-night"></span></p>
-                                <p class="mb-0">Divided by Joe's CF of <span class="correction-factor-display"></span> =
+
+                                <p class="mb-0">Divided by CF of <span class="correction-factor-display"></span> =
                                     <span id="cf-insulin"></span>
                                 </p>
-                                <p class="mb-0">Divided by Joe's CF of <span class="correction-factor-display"></span>
-                                    (night) =
-                                    <span id="cf-insulin-night"></span>
-                                </p>
-
+                               
+                                
+                                  
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"><img src="assets/diabetes.png"
                                             style="height:20px"></span>
                                     <div class="form-floating">
                                         <input type="tel" class="form-control" name="CFdose" id="CFdose"
                                             placeholder="Grams for carbs" disabled>
-                                        <label for="CFdose">Correction Insulin</label>
+                                        <label for="CFdose">Insulin for Correction</label>
                                     </div>
                                     <span class="input-group-text">U</span>
                                 </div>
@@ -142,8 +167,17 @@
     </div>
 
     <dialog id="settingsDialog">
-
-
+        <div class="text-center">
+            <div class="btn-group mb-3">
+                <input type="radio" class="btn-check" name="options" id="ratio_simple" autocomplete="off" checked />
+                <label class="btn btn-secondary" for="ratio_simple">Simple</label>
+                
+                <input type="radio" class="btn-check" name="options" id="ratio_expert" autocomplete="off" disabled/>
+                <label class="btn btn-secondary" for="ratio_expert">Advanced</label>
+                
+            </div>
+        </div>
+            
         <form>
             <div class="input-group mb-3">
                 <div class="form-floating">
@@ -178,7 +212,7 @@
 
 
 
-
+            <div class="text-center">
             <div class="btn-group mb-3">
                 <input type="radio" class="btn-check" name="options" id="UNITS_US" autocomplete="off" checked />
                 <label class="btn btn-secondary" for="UNITS_US">mg/dl</label>
@@ -186,6 +220,7 @@
                 <input type="radio" class="btn-check" name="options" id="UNITS_SI" autocomplete="off" />
                 <label class="btn btn-secondary" for="UNITS_SI">mmol/L</label>
 
+            </div>
             </div>
 
             <div>
