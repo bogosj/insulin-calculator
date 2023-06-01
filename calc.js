@@ -11,7 +11,7 @@ var enable_RAGE_BOLUS
 var enable_REVERSE_CORRECTION
 
 if (localStorage.getItem('CARB_RATIO') == null) {
-  // Joe's default values
+  // default values
   var CARB_RATIO = 15; // grams/U
   var CORRECTION_FACTOR = 60; // mg/dL/U
   var BG_CORRECT = 150; // If below this number, don't correct
@@ -23,7 +23,7 @@ if (localStorage.getItem('CARB_RATIO') == null) {
   var enable_RAGE_BOLUS = false; // Enable non-linear calculations  
   var enable_REVERSE_CORRECTION = false;
 } else {
-  // Joe's default values
+  // Load values
   var CARB_RATIO = localStorage.getItem('CARB_RATIO');
   var CORRECTION_FACTOR = localStorage.getItem('CORRECTION_FACTOR');
   var BG_CORRECT = localStorage.getItem('BG_CORRECT');
@@ -48,10 +48,10 @@ let runCalc = (targetGlucose, suffix) => {
   reading = parseInt(reading, 10) || 0;
   carbs = parseInt(carbs, 10) || 0;
 
-  if (reading <= BG_CORRECT) { 
+  if (reading <= BG_CORRECT) {
     reading = 0;
     document.getElementById('correct-warn').hidden = false;
-  } else {document.getElementById('correct-warn').hidden = true;};
+  } else { document.getElementById('correct-warn').hidden = true; };
   let delta = reading - targetGlucose;
   document.getElementById(`glucose-delta${suffix}`).innerText = delta;
   let cfInsulin = delta / CORRECTION_FACTOR;
@@ -62,7 +62,6 @@ let runCalc = (targetGlucose, suffix) => {
 
   let crInsulin = carbs / CARB_RATIO;
   crInsulin = parseFloat(crInsulin.toFixed(2));
-  //document.getElementById('cr-insulin').innerText = `${crInsulin} units`;
   document.getElementById('CRdose').value = crInsulin;
 
 
@@ -76,14 +75,11 @@ let runCalc = (targetGlucose, suffix) => {
     rounded += 0.5;
   }
   dosage = dosage.toFixed(2);
-  // let text = `${dosage} which rounds to <strong class="text-primary">${rounded}</strong>`;
-  // document.getElementById(`humalog-dosage${suffix}`).innerHTML = text;
   document.getElementById('dose').value = dosage;
 };
 
 let runBothCalcs = () => {
   runCalc(BG_TARGET, '');
-  
 
   Array.from(document.getElementsByClassName('dosage')).forEach((elt) => {
     elt.classList.remove('invisible');
@@ -136,9 +132,11 @@ var btn = document.getElementById('calc-button')
 btn.addEventListener('click', runBothCalcs);
 
 var gluc = document.getElementById('glucometer-reading')
+gluc.addEventListener('blur', runBothCalcs);
 gluc.addEventListener('change', runBothCalcs);
 
 var carb = document.getElementById('carb-grams')
+carb.addEventListener('blur', runBothCalcs);
 carb.addEventListener('change', runBothCalcs);
 
 const updateButton = document.getElementById("settingsbtn");
